@@ -1,36 +1,3 @@
-# import streamlit as st
-# import time
-# from PIL import Image
-# import os
-
-# st.set_page_config(layout="wide")
-# st.title("Live Steering Angle & Grad-CAM Dashboard")
-
-# image_placeholder = st.empty()
-# cam_placeholder = st.empty()
-# angle_placeholder = st.empty()
-
-# while True:
-#     try:
-#         # Load angle
-#         if os.path.exists("latest_angle.txt"):
-#             with open("latest_angle.txt", "r") as f:
-#                 angle = f.read()
-#             angle_placeholder.success(f"Predicted Steering Angle: {angle}")
-
-#         # Load input image
-#         if os.path.exists("latest_image.jpg"):
-#             img = Image.open("latest_image.jpg")
-#             image_placeholder.image(img, caption="Input Image", use_column_width=True)
-
-#         # Load Grad-CAM
-#         if os.path.exists("latest_cam.jpg"):
-#             cam = Image.open("latest_cam.jpg")
-#             cam_placeholder.image(cam, caption="Grad-CAM Heatmap", use_column_width=True)
-
-#     except Exception as e:
-#         st.warning(f"Waiting for data... {e}")
-#     # time.sleep(2)  # Refresh every second
 import streamlit as st
 from PIL import Image as PILImage
 import time
