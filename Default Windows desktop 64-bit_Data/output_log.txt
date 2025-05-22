@@ -22,7 +22,7 @@ Platform assembly: C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows
 Loading C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows desktop 64-bit_Data\Managed\UnityEngine.CloudBuild.dll into Unity Child Domain
 Platform assembly: C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows desktop 64-bit_Data\Managed\UniFileBrowser.dll (this message is harmless)
 Loading C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows desktop 64-bit_Data\Managed\UniFileBrowser.dll into Unity Child Domain
-- Completed reload, in  0.074 seconds
+- Completed reload, in  0.052 seconds
 Platform assembly: C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows desktop 64-bit_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows desktop 64-bit_Data\Managed\System.dll (this message is harmless)
 OnLevelWasLoaded was found on ReturnToMainMenu
@@ -38,54 +38,25 @@ desktop: 1920x1080 144Hz; virtual: 1920x1080 at 0,0
 XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 9.315400 ms
+UnloadTime: 1.127200 ms
 Setting up 3 worker threads for Enlighten.
-  Thread -> id: 74c -> priority: 1 
-  Thread -> id: 5314 -> priority: 1 
-  Thread -> id: 2e18 -> priority: 1 
+  Thread -> id: 5710 -> priority: 1 
+  Thread -> id: 57dc -> priority: 1 
+  Thread -> id: 4fc4 -> priority: 1 
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.224700 ms
+UnloadTime: 2.782900 ms
 
 Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 419.
-Total: 0.452100 ms (FindLiveObjects: 0.018300 ms CreateObjectMapping: 0.006200 ms MarkObjects: 0.150500 ms  DeleteObjects: 0.276200 ms)
-
-Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.689000 ms
-
-Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 1465.
-Total: 0.510700 ms (FindLiveObjects: 0.044500 ms CreateObjectMapping: 0.017500 ms MarkObjects: 0.228700 ms  DeleteObjects: 0.219500 ms)
-
-Platform assembly: C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows desktop 64-bit_Data\Managed\System.Configuration.dll (this message is harmless)
-Platform assembly: C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows desktop 64-bit_Data\Managed\System.Xml.dll (this message is harmless)
-Connection Open
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-Connection Open
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 49.169998 ms
-
-Unloading 174 unused Assets to reduce memory usage. Loaded Objects now: 433.
-Total: 2.056300 ms (FindLiveObjects: 0.030500 ms CreateObjectMapping: 0.011600 ms MarkObjects: 0.634900 ms  DeleteObjects: 1.378800 ms)
+Total: 0.284300 ms (FindLiveObjects: 0.035800 ms CreateObjectMapping: 0.011800 ms MarkObjects: 0.221500 ms  DeleteObjects: 0.014500 ms)
 
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.493600 ms
+UnloadTime: 1.486700 ms
 
-Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 1574.
-Total: 0.631700 ms (FindLiveObjects: 0.074900 ms CreateObjectMapping: 0.019900 ms MarkObjects: 0.330500 ms  DeleteObjects: 0.205200 ms)
+Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 1570.
+Total: 0.460700 ms (FindLiveObjects: 0.042300 ms CreateObjectMapping: 0.018100 ms MarkObjects: 0.221200 ms  DeleteObjects: 0.178700 ms)
 
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.523200 ms
-
-Unloading 180 unused Assets to reduce memory usage. Loaded Objects now: 470.
-Total: 1.811800 ms (FindLiveObjects: 0.022600 ms CreateObjectMapping: 0.009300 ms MarkObjects: 0.313900 ms  DeleteObjects: 1.465600 ms)
-
-Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.625900 ms
-
-Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 1577.
-Total: 0.691500 ms (FindLiveObjects: 0.055700 ms CreateObjectMapping: 0.017800 ms MarkObjects: 0.399800 ms  DeleteObjects: 0.217700 ms)
+Platform assembly: C:\Users\hussa\OneDrive\Desktop\Major Project\Default Windows desktop 64-bit_Data\Managed\UnityScript.Lang.dll (this message is harmless)
+Starting to record
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
 
