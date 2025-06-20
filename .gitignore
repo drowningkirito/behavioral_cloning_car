@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+
+# Environment
+env/
+venv/
+
+# Model files
+*.h5
+*.pth
+
+# Log/Output files
+*.csv
+*.txt
+*.jpg
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Executables
+*.exe
+
+# OS files
+.DS_Store
+Thumbs.db
