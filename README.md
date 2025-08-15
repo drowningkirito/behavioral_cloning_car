@@ -13,7 +13,7 @@ Welcome to an exciting end-to-end self-driving car project! This repository powe
 ## 🎥 Demo
 
 ![Streamlit Dashboard](assets/github_dash_demo.png)\
-*Replace with a screenshot of your dashboard in action for maximum wow factor!*
+
 
 ## 🛠️ Requirements
 
