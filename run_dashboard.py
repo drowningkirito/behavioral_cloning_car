@@ -1,6 +1,3 @@
-# ==========================
-# Imports
-# ==========================
 import socketio
 import eventlet
 import torch
@@ -39,27 +36,16 @@ class NvidiaTorchModel(nn.Module):
     def __init__(self):
         super(NvidiaTorchModel, self).__init__()
         self.model = nn.Sequential(
-            nn.Conv2d(3, 24, kernel_size=5, stride=2),
-            nn.ELU(),
-            nn.Conv2d(24, 36, kernel_size=5, stride=2),
-            nn.ELU(),
-            nn.Conv2d(36, 48, kernel_size=5, stride=2),
-            nn.ELU(),
-            nn.Conv2d(48, 64, kernel_size=3),
-            nn.ELU(),
-            nn.Conv2d(64, 64, kernel_size=3),
-            nn.ELU(),
+            nn.Conv2d(3, 24, kernel_size=5, stride=2), nn.ELU(),
+            nn.Conv2d(24, 36, kernel_size=5, stride=2), nn.ELU(),
+            nn.Conv2d(36, 48, kernel_size=5, stride=2), nn.ELU(),
+            nn.Conv2d(48, 64, kernel_size=3), nn.ELU(),
+            nn.Conv2d(64, 64, kernel_size=3), nn.ELU(),
             nn.Dropout(0.5),
             nn.Flatten(),
-            nn.Linear(64 * 1 * 18, 100),
-            nn.ELU(),
-            nn.Dropout(0.5),
-            nn.Linear(100, 50),
-            nn.ELU(),
-            nn.Dropout(0.5),
-            nn.Linear(50, 10),
-            nn.ELU(),
-            nn.Dropout(0.5),
+            nn.Linear(64 * 1 * 18, 100), nn.ELU(), nn.Dropout(0.5),
+            nn.Linear(100, 50), nn.ELU(), nn.Dropout(0.5),
+            nn.Linear(50, 10), nn.ELU(), nn.Dropout(0.5),
             nn.Linear(10, 1)
         )
 
@@ -68,7 +54,7 @@ class NvidiaTorchModel(nn.Module):
 
 # Load model
 model = NvidiaTorchModel()
-model.load_state_dict(torch.load("model_torch.pth", map_location=torch.device("cpu")))
+model.load_state_dict(torch.load("model_torch1.pth", map_location=torch.device("cpu")))
 model.eval()
 
 # ==========================
@@ -91,10 +77,8 @@ def generate_gradcam(model, input_tensor, target_layer):
     return grayscale_cam
 
 def measure_gradcam_time(model, input_tensor, target_layer):
-    torch.cuda.synchronize() if torch.cuda.is_available() else None
     start_time = time.time()
     grayscale_cam = generate_gradcam(model, input_tensor, target_layer)
-    torch.cuda.synchronize() if torch.cuda.is_available() else None
     end_time = time.time()
     duration = end_time - start_time
 
@@ -125,13 +109,15 @@ def start_socketio_server():
     @sio.on("telemetry")
     def telemetry(sid, data):
         speed = float(data['speed'])
+        gt_angle = float(data['steering_angle'])
+
         image = Image.open(BytesIO(base64.b64decode(data['image'])))
         image_np = np.asarray(image)
         image_pre = preprocess(image_np)
         input_tensor = image_to_tensor(np.array([image_pre]))
 
         with torch.no_grad():
-            angle = model(input_tensor).item()
+            pred_angle = model(input_tensor).item()
 
         # GradCAM with timing
         grayscale_cam, gradcam_time = measure_gradcam_time(model, input_tensor, model.model[9])
@@ -141,7 +127,8 @@ def start_socketio_server():
         throttle = 1.0 - speed / 10
 
         packet = {
-            'angle': round(angle, 2),
+            'pred_angle': round(pred_angle, 2),
+            'gt_angle': round(gt_angle, 2),
             'speed': round(speed, 2),
             'throttle': round(throttle, 2),
             'image': encode_image(img_np),
@@ -154,7 +141,7 @@ def start_socketio_server():
             shared_data.update(packet)
 
         sio.emit("dashboard_data", packet)
-        sio.emit("steer", {"steering_angle": str(angle), "throttle": str(throttle)})
+        sio.emit("steer", {"steering_angle": str(pred_angle), "throttle": str(throttle)})
 
     @sio.on("connect")
     def connect(sid, environ):
@@ -177,11 +164,13 @@ img_placeholder = img_col.empty()
 cam_placeholder = cam_col.empty()
 
 latency_placeholder = st.empty()
+status_placeholder = st.empty()  # for "waiting" message
 
 a_col, s_col, t_col = st.columns(3)
-angle_placeholder = a_col.metric("Steering Angle", "---")
-speed_placeholder = s_col.metric("Speed", "---")
-throttle_placeholder = t_col.metric("Throttle", "---")
+angle_placeholder = a_col.metric("Predicted Steering", "---")
+gt_angle_placeholder = s_col.metric("Ground Truth Steering", "---")
+speed_placeholder = st.metric("Speed", "---")
+throttle_placeholder = st.metric("Throttle", "---")
 
 st.markdown("---")
 graph_placeholder = st.empty()
@@ -190,7 +179,7 @@ download_placeholder = st.empty()
 # Init logs
 if not os.path.exists(log_file):
     with open(log_file, "w") as f:
-        f.write("timestamp,steering,speed,throttle\n")
+        f.write("timestamp,pred_steering,gt_steering,speed,throttle\n")
 
 if not os.path.exists(latency_log_file):
     with open(latency_log_file, "w") as f:
@@ -207,12 +196,20 @@ while True:
         d = shared_data.copy()
 
     try:
+        if not d:
+            status_placeholder.info("⏳ Waiting for telemetry data...")
+            continue
+        else:
+            status_placeholder.empty()
+
         if d.get("image"):
             img_placeholder.image(decode_img(d["image"]), caption="Input Image", use_column_width=True)
         if d.get("gradcam"):
             cam_placeholder.image(decode_img(d["gradcam"]), caption="Grad-CAM", use_column_width=True)
-        if d.get("angle") is not None:
-            angle_placeholder.metric("Steering Angle", f"{d['angle']}°")
+        if d.get("pred_angle") is not None:
+            angle_placeholder.metric("Predicted Steering", f"{d['pred_angle']}°")
+        if d.get("gt_angle") is not None:
+            gt_angle_placeholder.metric("Ground Truth Steering", f"{d['gt_angle']}°")
         if d.get("speed") is not None:
             speed_placeholder.metric("Speed", f"{d['speed']}")
         if d.get("throttle") is not None:
@@ -226,18 +223,20 @@ while True:
             log_counter = 0
             ts = time.time()
             with open(log_file, "a") as f:
-                f.write(f"{ts},{d['angle']},{d['speed']},{d['throttle']}\n")
-            log_deque.append((ts, d['angle'], d['speed'], d['throttle']))
+                f.write(f"{ts},{d['pred_angle']},{d['gt_angle']},{d['speed']},{d['throttle']}\n")
+            log_deque.append((ts, d['pred_angle'], d['gt_angle'], d['speed'], d['throttle']))
 
         # Plotting
         if time.time() - last_plot_time > 2 and len(log_deque) >= 2:
             last_plot_time = time.time()
-            df = pd.DataFrame(log_deque, columns=["timestamp", "steering", "speed", "throttle"])
+            df = pd.DataFrame(log_deque, columns=["timestamp", "pred_steering", "gt_steering", "speed", "throttle"])
             df["time"] = pd.to_datetime(df["timestamp"], unit='s')
 
             fig, ax = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
-            ax[0].plot(df["time"], df["steering"], color="blue")
+            ax[0].plot(df["time"], df["pred_steering"], color="blue", label="Predicted")
+            ax[0].plot(df["time"], df["gt_steering"], color="orange", linestyle="--", label="Ground Truth")
             ax[0].set_title("Steering Angle")
+            ax[0].legend()
 
             ax[1].plot(df["time"], df["speed"], color="green")
             ax[1].set_title("Speed")
@@ -258,8 +257,13 @@ while True:
                 label="📥 Download Logs",
                 data=csv_data,
                 file_name="steering_logs.csv",
-                mime="text/csv"
+                mime="text/csv",
+                key="download_logs"  # unique key
             )
 
     except Exception:
         continue
+
+    except Exception:
+        continue
+
