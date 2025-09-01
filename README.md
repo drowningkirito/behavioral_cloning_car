@@ -12,7 +12,8 @@ Welcome to an exciting end-to-end self-driving car project! This repository powe
 
 ## 🎥 Demo
 
-![Streamlit Dashboard](assets/fig 13 Live Dashboard Screenshot with Grad-CAM Overlays.png)\
+![Streamlit Dashboard](assets/fig%2013%20Live%20Dashboard%20Screenshot%20with%20Grad-CAM%20Overlays.png)
+
 
 
 ## 🛠️ Requirements
