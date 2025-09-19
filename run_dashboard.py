@@ -264,6 +264,4 @@ while True:
     except Exception:
         continue
 
-    except Exception:
-        continue
 
