@@ -18,7 +18,7 @@ Welcome to an exciting end-to-end self-driving car project! This repository powe
 
 ## 🛠️ Requirements
 
-- **Python**: 3.8+ (tested on 3.12.3 for dashboard) 🐍
+- **Python**: 3.7.12 🐍
 - **Udacity Simulator**: Download from Udacity's GitHub 🚘
 - **Hardware**: CPU (GPU recommended for faster training/inference) 💻
 
